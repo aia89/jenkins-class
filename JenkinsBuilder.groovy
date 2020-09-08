@@ -61,7 +61,7 @@ def slavePodTemplate = """
             stage('checking') {
                 sh 'ls -l'
             }
-            }
+            
         }
       }
     }
