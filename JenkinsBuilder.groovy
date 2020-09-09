@@ -52,7 +52,7 @@ def slavePodTemplate = """
                 sh "docker login --username  $USERNAME  --password $PASSWORD " 
             }
             stage('Docker Push') {
-                sh 'docker tag -t artemis fsadykov/artemis'
+                sh 'docker tag artemis fsadykov/artemis'
                 sh 'docker push fsadykov/artemis'
             }
         }
