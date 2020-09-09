@@ -1,5 +1,8 @@
 //unique name for the pod
 def k8slabel = "jenkins-pipeline-${UUID.randomUUID().toString()}"
+
+def branch = "${scm.branches[0].name}".replaceAll(/^\*\//, '')
+
 def slavePodTemplate = """
       metadata:
         labels:
@@ -52,11 +55,12 @@ def slavePodTemplate = """
                 sh "docker login --username  $USERNAME  --password $PASSWORD " 
             }
             stage('Docker Push') {
+                println(branch)
                 sh 'docker tag artemis aiados/artemis'
                 sh 'docker push aiados/artemis'
             }
         }
+      }
     }
-    }
-}
+  }
 }
