@@ -3,6 +3,13 @@ def k8slabel = "jenkins-pipeline-${UUID.randomUUID().toString()}"
 
 def branch = "${scm.branches[0].name}".replaceAll(/^\*\//, '')
 
+properties([
+    [$class: 'RebuildSettings', autoRebuild: false, rebuildDisabled: false], 
+    parameters([
+        booleanParam(defaultValue: false, description: 'Select to be able to psuh to latest ', name: 'pushLatest')
+        ])
+    ])
+
 def slavePodTemplate = """
       metadata:
         labels:
@@ -55,9 +62,15 @@ def slavePodTemplate = """
                 sh "docker login --username  $USERNAME  --password $PASSWORD " 
             }
             stage('Docker Push') {
-                println(branch)
-                sh "docker tag artemis aiados/artemis:${branch}"
-                sh "docker push aiados/artemis:${branch}"
+                if (params.pushLatest) {
+                    println('Pushing the image to latest version!!')
+                    sh "docker tag artemis aiados/artemis:latest"
+                    sh "docker push aiados/artemis:latest"
+
+                    } 
+                    println(branch)
+                    sh "docker tag artemis aiados/artemis:${branch}"
+                    sh "docker push aiados/artemis:${branch}"
             }
         }
       }
