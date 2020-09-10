@@ -2,7 +2,7 @@
 def k8slabel = "jenkins-pipeline-${UUID.randomUUID().toString()}"
 
 def branch = "${scm.branches[0].name}".replaceAll(/^\*\//, '')
-
+def gitCommitHash = ''
 properties([
     [$class: 'RebuildSettings', autoRebuild: false, rebuildDisabled: false], 
     parameters([
@@ -50,6 +50,7 @@ def slavePodTemplate = """
       node(k8slabel) {
             stage("Chekout SCM") {
                 checkout scm
+                gitCommitHash = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
             }
     
     dir('deployments/docker') {
@@ -69,8 +70,8 @@ def slavePodTemplate = """
 
                     } 
                     println(branch)
-                    sh "docker tag artemis aiados/artemis:${branch}"
-                    sh "docker push aiados/artemis:${branch}"
+                    sh "docker tag artemis aiados/artemis:${gitCommitHash}"
+                    sh "docker push aiados/artemis:${gitCommitHash}"
             }
         }
       }
