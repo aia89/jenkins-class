@@ -18,8 +18,8 @@ if (branch == "master") {
   environment = "qa"
 } else {
   println('Please use proper name for your branch!')
-  currentBuild.result = 'FAILURE'
-  println("ERROR Detected:")
+  currentBuild.result = 'FAILURE'	      
+  error('Please use proper name for your branch!')
 }
 
 properties([
