@@ -73,6 +73,9 @@ def slavePodTemplate = """
                     sh "docker tag artemis aiados/artemis:${gitCommitHash}"
                     sh "docker push aiados/artemis:${gitCommitHash}"
             }
+            stage('Trigger Deploy') {
+                
+            }
         }
       }
     }
