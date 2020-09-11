@@ -7,11 +7,11 @@ properties([
         choice(choices: ['dev', 'qa', 'stage', 'prod'], description: 'Please provide the environment to deploy ', name: 'environment')
         ])
         ])
-println(
+ println(
     """
     Apply changes: ${params.applyChanges}
     Destroy changes: ${params.destroyChanges}
     Docker  image:  ${params.selectedDockerImage}
     Environment: ${params.environment}
     """
-)
+ )
