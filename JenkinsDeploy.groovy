@@ -56,7 +56,15 @@ def slavePodTemplate = """
         
         stage("Apply/Plan") {
             container("fuchicorptools") {
-                sh 'kubectl version'
+            
+            if (!destroyChanges) {
+                if (applyChanges) {
+                    println("Applying the changes!")
+                } else {
+                    println("Planing the changes")
+                }
+            }
+                
             }
         }
       }
