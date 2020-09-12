@@ -57,8 +57,8 @@ def slavePodTemplate = """
         stage("Apply/Plan") {
             container("fuchicorptools") {
             
-            if (!destroyChanges) {
-                if (applyChanges) {
+            if (!params.destroyChanges) {
+                if (params.applyChanges) {
                     println("Applying the changes!")
                 } else {
                     println("Planing the changes")
@@ -69,15 +69,12 @@ def slavePodTemplate = """
         }
 
         stage("Destroy") {
-            if (!applyChanges) {
-                if (destroyChanges) {
+            if (!params.applyChanges) {
+                if (params.destroyChanges) {
                     println("Destroying everything")
                 } 
             } else {
-                println("
-                Sorry I can not destroy Tools!!!
-                I can Destroy only following environments dev, qa, test, stage
-                ")
+                println("Sorry I can not destroy and Apply")
             }
         }
       }
